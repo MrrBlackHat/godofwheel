@@ -464,30 +464,37 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
 }
 
-#wheel {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-    transition: transform 10s cubic-bezier(0.1, 0.7, 0.1, 1);
+/* Tablet and smaller */
+@media (max-width: 1024px) {
+    #wheel-container {
+        width: 90vw; /* Make the wheel take up more of the viewport width */
+        max-width: 500px; /* Keep a reasonable maximum size */
+        margin-bottom: 30px; /* Add more space below the wheel */
+    }
 }
 
-#wheel svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+/* Smaller mobile devices */
+@media (max-width: 768px) {
+    #wheel-container {
+        width: 95vw; /* Make the wheel even larger on smaller screens */
+        max-width: 450px; /* Slightly reduce max size for very small screens */
+    }
+    #wheel svg text {
+        font-size: 14px; /* Slightly increase text size for better readability */
+    }
 }
 
-#wheel svg text {
-    font-family: 'Khmer OS Siemreap', 'Khmer', 'Arial', sans-serif;
-    font-size: 16px;
-    font-weight: normal;
-    user-select: none;
-    pointer-events: none;
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    #wheel-container {
+        width: 100vw; /* Make the wheel take up the full viewport width */
+        max-width: none; /* Remove max-width restriction */
+        margin-left: -20px; /* Compensate for padding to maximize space */
+        margin-right: -20px; /* Compensate for padding to maximize space */
+    }
+    #wheel svg text {
+        font-size: 16px; /* Further increase text size for very small screens */
+    }
 }
 
 /* CORRECTED POINTER STYLES - Consistent for both Desktop and Mobile */
