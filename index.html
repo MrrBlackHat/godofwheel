@@ -236,6 +236,7 @@ body {
 
 /* --- Sidebar Styles (No changes here) --- */
 .sidebar {
+    /* Your existing properties... */
     width: 350px;
     background: var(--sidebar-bg);
     color: var(--text-color-light);
@@ -245,12 +246,18 @@ body {
     flex-direction: column;
     justify-content: space-between;
     flex-shrink: 0;
+    
+    /* Add these new properties */
+    margin: 0 auto; /* This centers the sidebar */
+    max-width: 100%; /* Ensures it doesn't overflow on mobile */
 }
 
 .sidebar-top {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    align-items: center; /* This centers all child elements */
+    width: 100%; /* Ensures full width */
 }
 
 .sidebar-header {
@@ -260,6 +267,7 @@ body {
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
+    width: 100%; /* Add this to ensure full width */
 }
 
 .sidebar-header h2 {
@@ -292,6 +300,8 @@ body {
     flex-wrap: wrap;
     margin-bottom: 15px;
     gap: 10px;
+    justify-content: center; /* Add this to center buttons */
+    width: 100%; /* Add this to ensure full width */
 }
 
 .sidebar-controls button {
@@ -323,6 +333,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%; /* Add this to ensure full width */
+    align-items: center; /* Add this to center child elements */
 }
 
 .sidebar-input-group .add-image-button {
@@ -395,7 +407,7 @@ body {
 }
 
 .sidebar-entry-list {
-    background: #333333;
+    background: #000000;
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 10px;
@@ -405,6 +417,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 100%; /* Add this to ensure full width */
 }
 
 .sidebar-entry-item {
