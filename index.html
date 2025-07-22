@@ -541,63 +541,67 @@ body {
 
 /* Smaller mobile devices (up to 768px wide) */
 @media (max-width: 768px) {
+    .main-content-wrapper {
+        padding: 15px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     #wheel-container {
-        width: 90vw; /* Take up 90% of screen width */
-        max-width: 380px; /* A bit smaller max for these devices */
-        margin-bottom: 15px;
+        width: 90vw;
+        max-width: 380px;
+        margin: 0 auto 15px auto;
     }
+
+    #wheel {
+        margin: 0 auto;
+    }
+
     #wheel svg text {
-        font-size: 16px; /* Consistent 16px */
+        font-size: 16px;
     }
-    /* Pointer size adjustment for these screens */
-    .pointer {
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-right: 20px solid #a3a3a3;
-    }
-    .center-circle {
-        width: 70px;
-        height: 70px;
-        font-size: 13px;
-    }
-    .sidebar-header h2 {
-        font-size: 15px;
-    }
-    .sidebar-controls button {
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-    .sidebar-input-field {
-        font-size: 14px;
-    }
-    .sidebar-entry-item {
-        font-size: 14px;
-        padding: 6px 5px;
-    }
+    
+    /* Keep your existing styles below */
+    .pointer { /* ... */ }
+    .center-circle { /* ... */ }
+    .sidebar-header h2 { /* ... */ }
+    .sidebar-controls button { /* ... */ }
+    .sidebar-input-field { /* ... */ }
+    .sidebar-entry-item { /* ... */ }
 }
 
 /* Extra small mobile devices (up to 480px wide) - Stack input and button */
 @media (max-width: 480px) {
-    #wheel-container {
-        width: 95vw; /* Even larger, 95% of viewport width for small phones */
-        max-width: none; /* Let it expand freely */
-        margin-left: auto; /* Re-center */
-        margin-right: auto; /* Re-center */
-    }
-    #wheel svg text {
-        font-size: 16px; /* Consistent 16px */
+    .main-content-wrapper {
+        padding: 15px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    .input-advanced-container {
-        flex-direction: column; /* Stack input and button vertically */
+    #wheel-container {
+        width: 95vw;
+        max-width: none;
+        margin: 0 auto 15px auto;
     }
-    .sidebar-input-field {
-        width: 100%; /* Take full width when stacked */
+
+    #wheel {
+        margin: 0 auto;
     }
-    .sidebar-input-group .input-advanced {
-        width: 100%; /* Take full width when stacked */
-        margin-top: 5px; /* Add a little space when stacked */
+
+    .pointer {
+        right: -15px;
     }
+
+    #wheel svg text {
+        font-size: 16px;
+    }
+
+    /* Keep your existing input styles below */
+    .input-advanced-container { /* ... */ }
+    .sidebar-input-field { /* ... */ }
+    .sidebar-input-group .input-advanced { /* ... */ }
 }
 
 
