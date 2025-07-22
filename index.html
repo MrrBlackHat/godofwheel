@@ -239,7 +239,7 @@ body {
 
 .sidebar-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space out title and hide checkbox */
     align-items: center;
     margin-bottom: 15px;
     padding-bottom: 10px;
@@ -251,25 +251,39 @@ body {
     margin: 0;
     color: #fff;
     font-weight: normal;
-}
-
-.sidebar-header .entries-count {
-    font-size: 14px;
-    color: #bbb;
-    display: flex;
+    display: flex; /* Allow "Entries" and count to be side-by-side */
     align-items: center;
-    gap: 5px;
+    gap: 8px; /* Space between "Entries" and the count */
 }
 
-.sidebar-header .entries-count span {
+.sidebar-header .entries-count { /* This rule is now effectively for the span inside h2 */
+    display: none; /* Hide the old entries count, it's now inside H2 */
+}
+
+.sidebar-header h2 span { /* Style for the count number inside h2 */
     background-color: #005cfa;
     color: #fff;
     padding: 4px 8px;
     border-radius: 12px;
     font-weight: bold;
     font-size: 12px;
-    margin-left: 0;
 }
+
+.hide-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between checkbox and text */
+    font-size: 14px;
+    color: #bbb;
+    cursor: pointer;
+}
+
+.hide-checkbox-container input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-yellow); /* Style the checkbox itself */
+}
+
 
 .sidebar-controls {
     display: flex;
@@ -290,6 +304,9 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
+    flex: 1 1 auto; /* Allow buttons to grow and shrink, but not collapse */
+    min-width: 90px; /* Ensure buttons don't get too small */
+    justify-content: center; /* Center content in button */
 }
 
 .sidebar-controls button svg {
@@ -339,6 +356,8 @@ body {
     width: 100%;
     box-sizing: border-box;
     flex-wrap: wrap; /* Allow wrapping of items if space is tight */
+    /* NEW: Align items to start for cleaner wrapping */
+    align-items: flex-start;
 }
 
 .sidebar-input-field {
@@ -376,6 +395,25 @@ body {
 
 .sidebar-input-group .input-advanced:hover {
     background: var(--button-bg-dark-hover);
+}
+
+/* NEW: Styles for the "Advanced" checkbox label when it's inside input-advanced-container */
+.input-advanced-container .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #bbb;
+    cursor: pointer;
+    width: 100%; /* Take full width when it wraps */
+    margin-top: 5px; /* Space from the input/button above */
+    box-sizing: border-box;
+}
+
+.input-advanced-container .checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-yellow);
 }
 
 .sidebar-entry-list {
@@ -807,6 +845,10 @@ body {
     .kebab-menu-icon {
         display: block;
     }
+
+    .sidebar-controls button {
+        flex: 1 1 30%; /* Allow 3 buttons per row if space, or 2, then 1 */
+    }
 }
 
 @media (max-width: 768px) { /* Smaller mobile devices */
@@ -823,6 +865,8 @@ body {
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
         border-right: 20px solid #a3a3a3; /* Smaller pointer for very small screens */
+        right: 0; /* Keep it on the right */
+        transform: translateY(-50%) translateX(100%); /* Keep it pointing left from the right edge */
     }
     .center-circle {
         width: 70px;
@@ -830,31 +874,54 @@ body {
         font-size: 13px;
     }
     .sidebar-header h2 {
-        font-size: 15px;
+        font-size: 16px; /* Slightly smaller header title */
+    }
+    .sidebar-header h2 span {
+        padding: 3px 6px; /* Slightly smaller count badge */
+        font-size: 11px;
+    }
+    .hide-checkbox-container {
+        font-size: 13px; /* Smaller "Hide" text */
     }
     .sidebar-controls button {
+        flex: 1 1 45%; /* Allow 2 buttons per row for most small phones */
+    }
+    /* Input field and advanced button handling on very small screens */
+    .sidebar-input-group .add-image-button {
         padding: 8px 12px;
         font-size: 13px;
     }
     .sidebar-input-field {
-        font-size: 14px;
+        font-size: 13px;
+        padding: 8px 12px;
     }
-    .sidebar-entry-item {
-        font-size: 14px;
-        padding: 6px 5px;
+    .sidebar-input-group .input-advanced {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+    .input-advanced-container .checkbox-label {
+        font-size: 13px;
     }
 }
 
 @media (max-width: 480px) { /* Extra small mobile devices - Stack input and button */
     .input-advanced-container {
         flex-direction: column; /* Stack input and button vertically */
+        align-items: stretch; /* Stretch items to fill container */
     }
-    .sidebar-input-field {
-        width: 100%; /* Take full width when stacked */
-    }
+    .sidebar-input-field,
     .sidebar-input-group .input-advanced {
         width: 100%; /* Take full width when stacked */
-        margin-top: 5px; /* Add a little space when stacked */
+        margin-top: 0; /* Reset margin if already set for horizontal */
+    }
+    .sidebar-input-group .input-advanced {
+        margin-top: 8px; /* Space between input and button when stacked */
+    }
+    .input-advanced-container .checkbox-label {
+        margin-top: 8px; /* Space between button and checkbox when stacked */
+    }
+    .sidebar-controls button {
+        flex: 1 1 100%; /* Make each button take full width */
     }
 }
 
@@ -973,8 +1040,10 @@ body {
     <div class="sidebar">
         <div class="sidebar-top">
             <div class="sidebar-header">
-                <h2>Entries</h2>
-                <div class="entries-count">Entries <span id="entriesCount">4</span></div>
+                <h2>Entries <span id="entriesCount">4</span></h2> <label class="hide-checkbox-container">
+                    <input type="checkbox" id="hideEntriesCheckbox">
+                    Hide
+                </label>
             </div>
 
             <div class="sidebar-controls">
@@ -1004,6 +1073,10 @@ body {
                 <div class="input-advanced-container">
                     <input type="text" id="newName" class="sidebar-input-field" placeholder="Add new entry..." onkeydown="if(event.key === 'Enter') addName()">
                     <button class="input-advanced">Advanced</button>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="advancedCheckbox">
+                        Advanced
+                    </label>
                 </div>
             </div>
 
@@ -1042,6 +1115,7 @@ const messageBoxTitle = document.getElementById("messageBoxTitle");
 const messageBoxContent = document.getElementById("messageBoxContent");
 const messageBoxActions = document.getElementById("messageBoxActions");
 const mobileNavDropdown = document.getElementById("mobileNavDropdown");
+const hideEntriesCheckbox = document.getElementById("hideEntriesCheckbox");
 
 
 function resizeWheel() {
@@ -1059,6 +1133,7 @@ function initialize() {
     resizeWheel();
     drawWheel();
     updateNameList();
+    toggleEntriesVisibility(); // Call this to set initial visibility based on checkbox state
 }
 
 // Update the name list display
@@ -1383,6 +1458,22 @@ document.addEventListener('click', (event) => {
         mobileNavDropdown.classList.remove('active');
     }
 });
+
+// Function to toggle the visibility of the entries list and controls
+function toggleEntriesVisibility() {
+    if (hideEntriesCheckbox.checked) {
+        nameListEl.style.display = "none";
+        document.querySelector('.sidebar-input-group').style.display = "none";
+        document.querySelector('.sidebar-controls').style.display = "none";
+    } else {
+        nameListEl.style.display = "flex"; // Revert to flex for list items
+        document.querySelector('.sidebar-input-group').style.display = "flex"; // Revert to flex
+        document.querySelector('.sidebar-controls').style.display = "flex"; // Revert to flex
+    }
+}
+
+// Add event listener to the hide checkbox
+hideEntriesCheckbox.addEventListener('change', toggleEntriesVisibility);
 
 
 // Call initialize when the DOM is fully loaded
