@@ -9,6 +9,18 @@
 
 <style>
 /* CSS Variables for easier theme management */
+/* At the very top of your styles.css file - Make sure this is present and paths are correct! */
+@font-face {
+    font-family: 'Khmer OS Siemreap'; /* This is the name you'll use in your CSS */
+    src: url('../fonts/KhmerOSSiemreap.woff2') format('woff2'), /* Prefer woff2 for modern browsers */
+         url('../fonts/KhmerOSSiemreap.woff') format('woff'),  /* Fallback for older browsers */
+         url('../fonts/KhmerOSSiemreap.ttf') format('truetype'); /* Fallback for even older/other systems */
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Recommended for better performance and user experience */
+}
+
+/* CSS Variables for easier theme management */
 :root {
     --header-bg: #005cfa;
     --body-bg: #111;
@@ -28,6 +40,7 @@
 }
 
 body {
+    /* Keep this font-family for general body text if you want, but #wheel svg text will override it */
     font-family: 'Noto Sans Khmer', 'Khmer', 'Arial', sans-serif;
     background: var(--body-bg);
     margin: 0;
@@ -38,7 +51,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- Header Styles --- */
+/* --- Header Styles (No changes here, they look fine) --- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -114,6 +127,8 @@ body {
     top: 25px;
     left: 0;
     border-radius: 4px;
+    padding-top: 4px;
+    margin-top: -4px;
 }
 
 .header-nav .dropdown-content span {
@@ -129,7 +144,8 @@ body {
     background-color: #555;
 }
 
-.header-nav .dropdown:hover .dropdown-content {
+.header-nav .dropdown:hover .dropdown-content,
+.header-nav .dropdown-content:hover {
     display: block;
 }
 
@@ -197,7 +213,7 @@ body {
     font-size: 13px;
 }
 
-/* --- Main Container and Layout --- */
+/* --- Main Container and Layout (No changes here) --- */
 .container {
     display: flex;
     flex: 1;
@@ -218,7 +234,7 @@ body {
     background: var(--main-content-bg);
 }
 
-/* --- Sidebar Styles --- */
+/* --- Sidebar Styles (No changes here) --- */
 .sidebar {
     width: 350px;
     background: var(--sidebar-bg);
@@ -379,7 +395,7 @@ body {
 }
 
 .sidebar-entry-list {
-    background: #333;
+    background: #333333;
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 10px;
@@ -451,15 +467,13 @@ body {
 }
 
 /* --- Wheel specific styles --- */
-/* --- Wheel specific styles --- */
-
 /* Default styles for Desktop (screens wider than 1024px) */
 #wheel-container {
     position: relative;
-    width: 500px; /* Set a clear fixed width for desktop */
-    max-width: 500px; /* Cap it at this size for desktop */
+    width: 450px;
+    max-width: 450px;
     height: auto;
-    aspect-ratio: 1 / 1; /* Ensures it remains a circle */
+    aspect-ratio: 1 / 1;
     margin: 0 auto 20px auto;
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.6),
                 0px 0px 20px rgba(0, 0, 0, 0.3) inset;
@@ -467,58 +481,152 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
 }
 
-/* Tablet and smaller (screens up to 1024px wide) */
+/* Default font-family and font-size for SVG text in the wheel (Desktop base) */
+#wheel svg text {
+    font-family: 'Khmer OS Siemreap', sans-serif;
+    font-size: 16px; /* Default for desktop */
+}
+
+/* Media queries for responsiveness - ORDER MATTERS */
+/* Tablets and larger mobile devices (up to 1024px wide) */
 @media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .main-content-wrapper {
+        order: 1;
+        padding: 15px;
+        padding-bottom: 0;
+        min-height: auto;
+    }
+
+    /* Make wheel larger on tablets */
     #wheel-container {
-        width: 75vw; /* Take 75% of viewport width on tablets */
-        max-width: 600px; /* Allow it to be larger than the desktop size (500px) */
-        height: auto; /* Keep auto height */
-        margin-bottom: 30px;
+        width: 70vw; /* Using 70% of viewport width for tablets */
+        max-width: 400px; /* Max size to prevent it from getting too big on large tablets */
+        margin-bottom: 20px;
+    }
+
+    #wheel svg text {
+        font-size: 16px; /* Keep 16px for tablets */
+    }
+
+    .sidebar {
+        order: 2;
+        width: 100%;
+        border-right: none;
+        box-shadow: none;
+        padding: 15px;
+        background: var(--main-content-bg);
+    }
+
+    .header {
+        justify-content: space-between;
+        padding: 8px 15px;
+        position: relative;
+    }
+
+    /* Hide the desktop navigation on mobile */
+    .header-nav {
+        display: none;
+    }
+
+    /* Show the kebab menu icon on mobile */
+    .kebab-menu-icon {
+        display: block;
     }
 }
 
-/* Smaller mobile devices (screens up to 768px wide) */
+/* Smaller mobile devices (up to 768px wide) */
 @media (max-width: 768px) {
     #wheel-container {
-        width: 90vw; /* Take 90% of viewport width on phones */
-        max-width: 600px; /* Still allow to go up to 600px if screen is wide enough */
+        width: 90vw; /* Take up 90% of screen width */
+        max-width: 380px; /* A bit smaller max for these devices */
+        margin-bottom: 15px;
     }
     #wheel svg text {
-        font-size: 16px; /* Increased text size for better readability */
+        font-size: 16px; /* Consistent 16px */
+    }
+    /* Pointer size adjustment for these screens */
+    .pointer {
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 20px solid #a3a3a3;
+    }
+    .center-circle {
+        width: 70px;
+        height: 70px;
+        font-size: 13px;
+    }
+    .sidebar-header h2 {
+        font-size: 15px;
+    }
+    .sidebar-controls button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .sidebar-input-field {
+        font-size: 14px;
+    }
+    .sidebar-entry-item {
+        font-size: 14px;
+        padding: 6px 5px;
     }
 }
 
-/* Extra small mobile devices (screens up to 480px wide) */
+/* Extra small mobile devices (up to 480px wide) - Stack input and button */
 @media (max-width: 480px) {
     #wheel-container {
-        width: 100vw; /* Take full viewport width */
-        max-width: none; /* Remove any max-width restriction for smallest screens */
-        /* These margins counteract the .main-content-wrapper padding (which is 15px at this breakpoint) */
-        margin-left: -15px;
-        margin-right: -15px;
-        /* Optional: If it truly fills the screen, you might not want rounded corners */
-        /* border-radius: 0; */
+        width: 95vw; /* Even larger, 95% of viewport width for small phones */
+        max-width: none; /* Let it expand freely */
+        margin-left: auto; /* Re-center */
+        margin-right: auto; /* Re-center */
     }
     #wheel svg text {
-        font-size: 18px; /* Further increased text size */
+        font-size: 16px; /* Consistent 16px */
+    }
+
+    .input-advanced-container {
+        flex-direction: column; /* Stack input and button vertically */
+    }
+    .sidebar-input-field {
+        width: 100%; /* Take full width when stacked */
+    }
+    .sidebar-input-group .input-advanced {
+        width: 100%; /* Take full width when stacked */
+        margin-top: 5px; /* Add a little space when stacked */
     }
 }
 
-/* The rest of your CSS remains the same */
+
+/* Animation for mobile dropdown */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure desktop dropdowns still work if somehow media query overlaps */
+@media (min-width: 1025px) {
+    .mobile-nav-dropdown {
+        display: none !important;
+    }
+}
 
 /* CORRECTED POINTER STYLES - Consistent for both Desktop and Mobile */
 .pointer {
     width: 0;
     height: 0;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-right: 30px solid #a3a3a3; /* Always points left */
+    border-top: 15px solid transparent; /* Half height of base */
+    border-bottom: 15px solid transparent; /* Half height of base */
+    border-right: 30px solid #a3a3a3; /* Points right */
     position: absolute;
-    top: 50%;
-    right: 0; /* Always on the right side of the wheel container */
-    transform: translateY(-50%) translateX(100%); /* Shifts pointer right by its own width to show its tip */
+    top: 50%; /* Vertically center */
+    right: -15px; /* Adjust to sit just outside the wheel, slightly less overlap */
+    transform: translateY(-50%); /* Center vertically */
     z-index: 10;
-    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.6));
+    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.6)); /* Stronger shadow for pointer */
 }
 
 .center-circle {
@@ -750,14 +858,6 @@ body {
     gap: 15px;
 }
 
-.message-box-actions button {
-    padding: 12px 25px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
 .message-box-actions .confirm-button {
     background-color: #28a745;
     color: white;
@@ -778,115 +878,6 @@ body {
     background-color: var(--button-bg-dark-hover);
 }
 
-
-/* --- Responsive design adjustments --- */
-@media (max-width: 1024px) { /* Tablet and smaller */
-    .container {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .main-content-wrapper {
-        order: 1;
-        padding: 15px;
-        padding-bottom: 0;
-        min-height: auto;
-    }
-
-    #wheel-container {
-        width: 320px;
-        height: 320px;
-        margin-bottom: 20px;
-    }
-
-    .sidebar {
-        order: 2;
-        width: 100%;
-        border-right: none;
-        box-shadow: none;
-        padding: 15px;
-        background: var(--main-content-bg);
-    }
-
-    .header {
-        justify-content: space-between;
-        padding: 8px 15px;
-        position: relative;
-    }
-
-    /* Hide the desktop navigation on mobile */
-    .header-nav {
-        display: none;
-    }
-
-    /* Show the kebab menu icon on mobile */
-    .kebab-menu-icon {
-        display: block;
-    }
-}
-
-@media (max-width: 768px) { /* Smaller mobile devices */
-    #wheel-container {
-        width: 280px;
-        height: 280px;
-        margin-bottom: 15px;
-    }
-    #wheel svg text {
-        font-size: 13px;
-    }
-    /* Pointer size adjustment for very small screens */
-    .pointer {
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-right: 20px solid #a3a3a3; /* Smaller pointer for very small screens */
-    }
-    .center-circle {
-        width: 70px;
-        height: 70px;
-        font-size: 13px;
-    }
-    .sidebar-header h2 {
-        font-size: 15px;
-    }
-    .sidebar-controls button {
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-    .sidebar-input-field {
-        font-size: 14px;
-    }
-    .sidebar-entry-item {
-        font-size: 14px;
-        padding: 6px 5px;
-    }
-}
-
-@media (max-width: 480px) { /* Extra small mobile devices - Stack input and button */
-    .input-advanced-container {
-        flex-direction: column; /* Stack input and button vertically */
-    }
-    .sidebar-input-field {
-        width: 100%; /* Take full width when stacked */
-    }
-    .sidebar-input-group .input-advanced {
-        width: 100%; /* Take full width when stacked */
-        margin-top: 5px; /* Add a little space when stacked */
-    }
-}
-
-
-/* Animation for mobile dropdown */
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Ensure desktop dropdowns still work if somehow media query overlaps */
-@media (min-width: 1025px) {
-    .mobile-nav-dropdown {
-        display: none !important;
-    }
-}
 </style>
 </head>
 <body>
@@ -1038,7 +1029,7 @@ body {
 // JavaScript for the wheel
 let originalNames = ["Tiger", "Eagle", "Cow", "Fox"];
 let names = [...originalNames];
-const colors = ["#d0ad00", "#4A90E2", "#009708", "#D0021B"];
+const colors = ["#d0ad00", "#4A90E2", "#009a05", "#D0021B"];
 let currentRotation = 0;
 let lastWinner = null;
 let forcedWinner = null;
@@ -1140,7 +1131,7 @@ function drawWheel() {
         text.setAttribute("text-anchor", "middle");
         text.setAttribute("dominant-baseline", "middle");
         text.setAttribute("fill", "white");
-        text.setAttribute("font-size", "10");
+        text.setAttribute("font-size", "16");
         text.setAttribute("font-weight", "normal");
 
         // Calculate rotation for text to be upright
