@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wheel of Names</title>
+<link href="https://fonts.googleapis.com/css2?family=Khmer&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* CSS Variables for easier theme management */
+:root {
+    --header-bg: #005cfa;
+    --body-bg: #111;
+    --main-content-bg: #1a1a1a;
+    --sidebar-bg: #2d2d2d;
+    --text-color-light: #eee;
+    --text-color-dark: #333;
+    --accent-yellow: #cba300;
+    --button-bg-dark: #000000;
+    --button-bg-dark-hover: #777;
+    --button-bg-red: #e74c3c;
+    --button-bg-red-hover: #c0392b;
+    --border-color: #444;
+    --input-bg: #444;
+    --input-border: #555;
+    --focus-border: #3498db;
+}
+
+body {
+    font-family: 'Noto Sans Khmer', 'Khmer', 'Arial', sans-serif; /* Your original font family */
+    background: var(--body-bg);
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Header Styles (Original) --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    background: var(--header-bg);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+    color: var(--text-color-light);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    background-image: url('https://wheelofnames.com/images/logo-dark-background-38.png'); /* Placeholder logo, consider replacing */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+}
+
+.header h1 {
+    color: var(--text-color-light);
+    margin: 0;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.header-nav span {
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s;
+}
+
+.header-nav span:hover {
+    color: #fff;
+}
+
+.header-nav .active {
+    color: #fff;
+    font-weight: bold;
+}
+
+.header-nav .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.header-nav .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+    top: 25px;
+    left: 0;
+    border-radius: 4px;
+}
+
+.header-nav .dropdown-content span {
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    cursor: pointer; /* Ensure dropdown items are clickable */
+}
+
+.header-nav .dropdown-content span:hover {
+    background-color: #555;
+}
+
+.header-nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* --- Main Container and Layout --- */
+.container {
+    display: flex;
+    flex: 1;
+    min-height: calc(100vh - 50px); /* Adjust height for sticky header */
+    overflow: hidden;
+    flex-direction: row; /* Default to row for desktop */
+}
+
+.main-content-wrapper {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: var(--main-content-bg);
+}
+
+/* --- Sidebar Styles --- */
+.sidebar {
+    width: 350px;
+    background: var(--sidebar-bg);
+    color: var(--text-color-light);
+    padding: 20px;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.sidebar-top {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #fff;
+    font-weight: normal;
+}
+
+.sidebar-header .entries-count { /* Changed from results-count for clarity based on your image */
+    font-size: 14px;
+    color: #bbb;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sidebar-header .entries-count span { /* Changed from results-count for clarity based on your image */
+    background-color: #005cfa;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 0;
+}
+
+.sidebar-controls {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.sidebar-controls button {
+    background: var(--button-bg-dark);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sidebar-controls button svg {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+.sidebar-controls button:hover {
+    background: var(--button-bg-dark-hover);
+}
+
+.sidebar-input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-input-group .add-image-button {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.sidebar-input-group .add-image-button:hover {
+    background: #45a049;
+}
+
+.sidebar-input-group .add-image-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sidebar-input-field {
+    flex-grow: 1;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-color-light);
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+}
+
+.sidebar-input-field::placeholder {
+    color: #aaa;
+}
+
+.sidebar-input-field:focus {
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);
+}
+
+.input-advanced-container {
+    display: flex;
+    gap: 10px;
+}
+
+.sidebar-input-group .input-advanced {
+    background: var(--button-bg-dark);
+    border: 1px solid var(--button-bg-dark-hover);
+    color: #ccc;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.sidebar-input-group .input-advanced:hover {
+    background: var(--button-bg-dark-hover);
+}
+
+.sidebar-entry-list {
+    background: #333;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 10px;
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar-entry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 5px;
+    border-bottom: 1px solid #444;
+    font-size: 15px;
+    color: #ccc;
+}
+
+.sidebar-entry-item:last-child {
+    border-bottom: none;
+}
+
+.sidebar-entry-item span {
+    flex-grow: 1;
+    padding-right: 10px;
+}
+
+.sidebar-entry-item .remove-button {
+    background: none;
+    border: none;
+    color: var(--button-bg-red);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 5px;
+    transition: color 0.2s;
+}
+
+.sidebar-entry-item .remove-button:hover {
+    color: var(--button-bg-red-hover);
+}
+
+.sidebar-footer {
+    display: flex;
+    margin-top: auto;
+    text-align: left;
+    font-size: 12px;
+    color: #888;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+
+.sidebar-footer span {
+    display: inline-block;
+}
+
+.sidebar-footer .new-badge {
+    background-color: #009207;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* --- Wheel specific styles --- */
+#wheel-container {
+    position: relative;
+    width: 90vw; /* Responsive width */
+    max-width: 500px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 20px auto;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.6),
+                0px 0px 20px rgba(0, 0, 0, 0.3) inset;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
+}
+
+#wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    transition: transform 10s cubic-bezier(0.1, 0.7, 0.1, 1);
+}
+
+#wheel svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#wheel svg text {
+    font-family: 'Khmer OS Siemreap', 'Khmer', 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* CORRECTED POINTER STYLES */
+.pointer {
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 30px solid #a3a3a3; /* Pointer head points left */
+    position: absolute;
+    top: 50%;
+    left: 480px; /* Position on the left edge of the wheel */
+    transform: translateY(-50%);
+    z-index: 10;
+    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.6));
+}
+
+.center-circle {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.center-circle::after {
+    display: none; /* No inner dot, text instead */
+}
+
+/* Winner Pop-up (Modal) Styles */
+.winner-modal-overlay, .force-winner-modal-overlay, .message-box-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.winner-modal, .force-winner-modal, .message-box {
+    background: var(--sidebar-bg);
+    border-radius: 8px;
+    padding: 0;
+    width: 700px;
+    max-width: 90%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.winner-modal-header {
+    background: var(--accent-yellow);
+    color: var(--text-color-dark);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    position: relative;
+}
+
+.winner-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-color-dark);
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    margin-left: 15px;
+    transition: color 0.2s;
+}
+
+.winner-modal-close:hover {
+    color: #666;
+}
+
+.winner-modal-content {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-color-light);
+    font-size: 18px;
+}
+
+.winner-modal-content .winner-name {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--accent-yellow);
+    margin: 20px 0;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0,0,0,0.5);
+}
+
+.winner-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 20px;
+    gap: 10px;
+    border-top: 1px solid var(--border-color);
+    background: #3a3a3a;
+}
+
+.winner-modal-actions button {
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    font-weight: bold;
+}
+
+.winner-modal-actions button:active {
+    transform: scale(0.98);
+}
+
+.winner-modal-actions .close-button {
+    background-color: var(--button-bg-dark);
+    color: white;
+    border: none;
+}
+
+.winner-modal-actions .close-button:hover {
+    background-color: var(--button-bg-dark-hover);
+}
+
+.winner-modal-actions .remove-button {
+    background-color: var(--button-bg-red);
+    color: white;
+    border: none;
+}
+
+.winner-modal-actions .remove-button:hover {
+    background-color: var(--button-bg-red-hover);
+}
+
+/* Confetti styles */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    opacity: 0;
+}
+
+/* Force Winner Input Modal */
+.force-winner-modal {
+    padding: 25px;
+    width: 350px;
+    text-align: center;
+}
+
+.force-winner-modal h3 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.force-winner-modal input[type="text"] {
+    width: calc(100% - 30px);
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color-light);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.force-winner-modal button {
+    background-color: var(--focus-border);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.force-winner-modal button:hover {
+    background-color: #2980b9;
+}
+
+.force-winner-modal .cancel-button {
+    background-color: var(--button-bg-dark);
+    margin-left: 10px;
+}
+
+.force-winner-modal .cancel-button:hover {
+    background-color: var(--button-bg-dark-hover);
+}
+
+/* Custom Message Box */
+.message-box {
+    padding: 25px;
+    width: 400px;
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-color-light);
+}
+
+.message-box h3 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.message-box-content {
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.message-box-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.message-box-actions button {
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.message-box-actions .confirm-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.message-box-actions .confirm-button:hover {
+    background-color: #218838;
+}
+
+.message-box-actions .cancel-button {
+    background-color: var(--button-bg-dark);
+    color: white;
+    border: none;
+}
+
+.message-box-actions .cancel-button:hover {
+    background-color: var(--button-bg-dark-hover);
+}
+
+
+/* --- Responsive design adjustments --- */
+@media (max-width: 1024px) { /* Tablet and smaller */
+    .container {
+        flex-direction: column; /* Stack vertically on mobile */
+        height: auto; /* Allow content to dictate height */
+    }
+
+    .main-content-wrapper {
+        order: 1; /* Wheel section comes first on mobile */
+        padding: 15px; /* Adjust padding for mobile */
+        padding-bottom: 0; /* Remove bottom padding if sidebar follows */
+        min-height: auto; /* Allow height to shrink */
+    }
+
+    #wheel-container {
+        width: 320px; /* Set a specific size for mobile wheel */
+        height: 320px;
+        margin-bottom: 20px; /* Space below the wheel */
+    }
+
+    .sidebar {
+        order: 2; /* Sidebar comes second on mobile */
+        width: 100%;
+        border-right: none;
+        box-shadow: none; /* Remove sidebar shadow on mobile */
+        padding: 15px; /* Adjust padding for mobile */
+        background: var(--main-content-bg); /* Match main content background for seamless look */
+    }
+
+    /* Adjust header for mobile to be more like wheelofnames.com */
+    .header {
+        justify-content: center; /* Center the title */
+        padding: 8px 15px;
+    }
+
+    .header-left {
+        margin-bottom: 0; /* No margin below header on mobile */
+    }
+
+    /* Hide the desktop navigation on mobile */
+    .header-nav {
+        display: none;
+    }
+
+    .sidebar-header .entries-count { /* Adjust count style for consistency */
+        margin-left: auto; /* Push count to the right */
+    }
+}
+
+@media (max-width: 768px) { /* Smaller mobile devices */
+    #wheel-container {
+        width: 280px;
+        height: 280px;
+        margin-bottom: 15px;
+    }
+    #wheel svg text {
+        font-size: 13px; /* Slightly smaller text on wheel */
+    }
+    .pointer {
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 20px solid #a3a3a3; /* Adjust size for smaller screens */
+        left: -10px; /* Adjust position for smaller screens */
+    }
+    .center-circle {
+        width: 70px; /* Smaller center circle */
+        height: 70px;
+        font-size: 13px;
+    }
+    .sidebar-header h2 {
+        font-size: 15px;
+    }
+    .sidebar-controls button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .sidebar-input-field {
+        font-size: 14px;
+    }
+    .sidebar-entry-item {
+        font-size: 14px;
+        padding: 6px 5px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="header-left">
+        <div class="header-icon"></div>
+        <h1>wheelofnames.com</h1>
+    </div>
+    <div class="header-nav">
+        <span>Customize</span>
+        <span>New</span>
+        <span>Open</span>
+        <span>Save</span>
+        <span>Share</span>
+        <span>Gallery</span>
+       <span class="dropdown">More
+            <div class="dropdown-content">
+                <span>Option 1</span>
+                <span>Option 2</span>
+                <span onclick="openForceWinnerModal()">Force Winner</span>
+            </div>
+        </span>
+        <span class="dropdown">English
+            <div class="dropdown-content">
+                <span>ភាសាខ្មែរ (Khmer)</span>
+                <span>Español</span>
+            </div>
+        </span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="main-content-wrapper">
+        <div id="wheel-container">
+            <div id="wheel"></div>
+            <div class="pointer"></div>
+            <div class="center-circle" onclick="spinWheel()"></div>
+        </div>
+
+        <div id="winnerModalOverlay" class="winner-modal-overlay">
+            <div class="winner-modal">
+                <div class="winner-modal-header">
+                    We have a winner!
+                    <button class="winner-modal-close" onclick="closeWinnerModal()">&times;</button>
+                </div>
+                <div class="winner-modal-content">
+                    <div class="winner-name" id="modalWinnerName"></div>
+                </div>
+                <div class="winner-modal-actions">
+                    <button class="close-button" onclick="closeWinnerModal()">Close</button>
+                    <button class="remove-button" onclick="removeWinnerAndClose()">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="forceWinnerModalOverlay" class="force-winner-modal-overlay">
+            <div class="force-winner-modal">
+                <h3>Force a Winner</h3>
+                <input type="text" id="forceWinnerInput" placeholder="Enter winner's name">
+                <button onclick="setForcedWinner()">Set Winner</button>
+                <button class="cancel-button" onclick="closeForceWinnerModal()">Cancel</button>
+            </div>
+        </div>
+
+        <div id="messageBoxOverlay" class="message-box-overlay">
+            <div class="message-box">
+                <h3 id="messageBoxTitle"></h3>
+                <p id="messageBoxContent" class="message-box-content"></p>
+                <div id="messageBoxActions" class="message-box-actions">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-header">
+                <h2>Entries</h2>
+                <div class="entries-count">Entries <span id="entriesCount">4</span></div>
+            </div>
+
+            <div class="sidebar-controls">
+                <button onclick="shuffleNames()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.5 7L16 5.5L14.5 4L13 5.5L14.5 7ZM14.5 17L16 18.5L14.5 20L13 18.5L14.5 17ZM10 18H3V16H10V18ZM21 16L18 13L18 19L21 16ZM3 8H21V10H3V8ZM21 4L18 7L18 1L21 4ZM10 6H3V4H10V6Z" />
+                    </svg> Shuffle
+                </button>
+                <button onclick="sortNames()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 21H9V4H7V21ZM15 13H17V4H15V13ZM11 17H13V4H11V17ZM3 21H5V4H3V21ZM19 21H21V4H19V21Z" />
+                    </svg> Sort
+                </button>
+                <button>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 10.59L14.59 8L16 9.41L13.41 12L16 14.59L14.59 16L12 13.41L9.41 16L8 14.59L10.59 12L8 9.41L9.41 8L12 10.59Z" />
+                    </svg> Clear All
+                </button>
+            </div>
+
+            <div class="sidebar-input-group">
+                <button class="add-image-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z" />
+                    </svg> Add image
+                </button>
+                <div class="input-advanced-container">
+                    <input type="text" id="newName" class="sidebar-input-field" placeholder="Add new entry..." onkeydown="if(event.key === 'Enter') addName()">
+                    <button class="input-advanced">Advanced</button>
+                </div>
+            </div>
+
+            <div class="sidebar-entry-list" id="nameList">
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <span>Version 364</span> <span class="new-badge">New!</span>
+            <span>Changelog</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// JavaScript for the wheel
+let originalNames = ["Tiger", "Eagle", "Cow", "Fox"];
+let names = [...originalNames];
+const colors = ["#d0ad00", "#4A90E2", "#009708", "#D0021B"];
+let currentRotation = 0;
+let lastWinner = null;
+let forcedWinner = null;
+let isSpinning = false;
+
+// Cached DOM elements
+const wheelContainer = document.getElementById("wheel-container");
+const wheelEl = document.getElementById("wheel");
+const modalWinnerName = document.getElementById("modalWinnerName");
+const winnerModalOverlay = document.getElementById("winnerModalOverlay");
+const forceWinnerModalOverlay = document.getElementById("forceWinnerModalOverlay");
+const forceWinnerInput = document.getElementById("forceWinnerInput");
+const nameListEl = document.getElementById("nameList");
+const entriesCountSpan = document.getElementById("entriesCount");
+const messageBoxOverlay = document.getElementById("messageBoxOverlay");
+const messageBoxTitle = document.getElementById("messageBoxTitle");
+const messageBoxContent = document.getElementById("messageBoxContent");
+const messageBoxActions = document.getElementById("messageBoxActions");
+
+
+function resizeWheel() {
+    const size = wheelContainer.clientWidth;
+    wheelEl.style.width = size + "px";
+    wheelEl.style.height = size + "px";
+}
+window.addEventListener("resize", () => {
+    resizeWheel();
+    drawWheel();
+});
+
+// Initialize the wheel and name list
+function initialize() {
+    resizeWheel();
+    drawWheel();
+    updateNameList();
+}
+
+// Update the name list display
+function updateNameList() {
+    nameListEl.innerHTML = names.map(name => `
+        <div class="sidebar-entry-item">
+            <span>${name}</span>
+            <button class="remove-button" onclick="removeName('${name}')">&times;</button>
+        </div>
+    `).join("");
+
+    entriesCountSpan.textContent = names.length;
+}
+
+// Draw the wheel using SVG
+function drawWheel() {
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", "0 0 200 200");
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+
+    if (names.length === 0) {
+        wheelEl.innerHTML = "";
+        // Display "No entries" message on wheel if needed
+        const noEntriesText = document.createElementNS(svgNS, "text");
+        noEntriesText.setAttribute("x", "100");
+        noEntriesText.setAttribute("y", "100");
+        noEntriesText.setAttribute("text-anchor", "middle");
+        noEntriesText.setAttribute("dominant-baseline", "middle");
+        noEntriesText.setAttribute("fill", "#ccc");
+        noEntriesText.setAttribute("font-size", "14");
+        noEntriesText.textContent = "No entries to spin";
+        svg.appendChild(noEntriesText);
+        wheelEl.appendChild(svg);
+        return;
+    }
+
+    const anglePer = 360 / names.length;
+
+    names.forEach((name, i) => {
+        const startAngle = anglePer * i;
+        const endAngle = anglePer * (i + 1);
+
+        const x1 = 100 + 100 * Math.cos(Math.PI * startAngle / 180);
+        const y1 = 100 + 100 * Math.sin(Math.PI * startAngle / 180);
+        const x2 = 100 + 100 * Math.cos(Math.PI * endAngle / 180);
+        const y2 = 100 + 100 * Math.sin(Math.PI * endAngle / 180);
+
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute("d", `M100,100 L${x1},${y1} A100,100 0 ${(anglePer > 180 ? 1 : 0)},1 ${x2},${y2} Z`);
+        path.setAttribute("fill", colors[i % colors.length]);
+        svg.appendChild(path);
+
+        const angle = startAngle + anglePer / 2; // Middle of the slice
+        const radiusForText = 65; // Distance from center to text
+        const textX = 100 + radiusForText * Math.cos(Math.PI * angle / 180);
+        const textY = 100 + radiusForText * Math.sin(Math.PI * angle / 180);
+
+        const text = document.createElementNS(svgNS, "text");
+        text.setAttribute("x", textX);
+        text.setAttribute("y", textY);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.setAttribute("fill", "white");
+        text.setAttribute("font-size", "10");
+        text.setAttribute("font-weight", "normal");
+
+        // Calculate rotation for text to be upright
+        let textRotationAngle = angle + 0;
+    
+        text.setAttribute("transform", `rotate(${textRotationAngle}, ${textX}, ${textY})`);
+        text.textContent = name;
+        svg.appendChild(text);
+    });
+
+    wheelEl.innerHTML = "";
+    wheelEl.appendChild(svg);
+}
+
+// Spin the wheel
+function spinWheel() {
+    if (isSpinning) {
+        showMessageBox("The wheel is currently spinning. Please wait.", "Spinning...");
+        return;
+    }
+    if (names.length === 0) {
+        showMessageBox("Please add names to the wheel before spinning!", "Error");
+        return;
+    }
+
+    isSpinning = true;
+
+    let targetIndex;
+    let finalName;
+
+    if (forcedWinner && names.includes(forcedWinner)) {
+        targetIndex = names.indexOf(forcedWinner);
+        finalName = forcedWinner;
+        forcedWinner = null;
+        forceWinnerInput.value = '';
+    } else {
+        targetIndex = Math.floor(Math.random() * names.length);
+        finalName = names[targetIndex];
+    }
+
+    lastWinner = finalName;
+
+    const anglePerSlice = 360 / names.length;
+    let targetSliceMidAngle = (targetIndex * anglePerSlice) + (anglePerSlice / 2);
+    let desiredFinalModuloAngle = (360 - targetSliceMidAngle) % 360;
+
+    const maxOffset = anglePerSlice * 0.45;
+    const randomOffset = (Math.random() * 2 - 1) * maxOffset;
+    desiredFinalModuloAngle += randomOffset;
+
+    let fullSpins = 10;
+    let totalRotation = currentRotation - (currentRotation % 360) + desiredFinalModuloAngle + (fullSpins * 360);
+
+    wheelEl.style.transition = "transform 8s cubic-bezier(0.1, 0.7, 0.1, 1)";
+    wheelEl.style.transform = `rotate(${totalRotation}deg)`;
+
+    currentRotation = totalRotation;
+
+    setTimeout(() => {
+        isSpinning = false;
+        showWinnerModal(finalName);
+    }, 8200);
+}
+
+// Show the winner modal
+function showWinnerModal(winnerName) {
+    modalWinnerName.textContent = winnerName;
+    winnerModalOverlay.style.display = "flex";
+    const audio = new Audio('https://www.soundjay.com/human/sounds/applause-8.mp3');
+    audio.volume = 0.4;
+    audio.play().catch(e => console.log("Audio play failed:", e));
+
+    const confettiColors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#FF6B6B', '#5DA2D5', '#FFD166'];
+    const numConfetti = 100;
+    for (let i = 0; i < numConfetti; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+
+            const startX = Math.random() * window.innerWidth;
+            const startY = -20;
+
+            confetti.style.left = startX + 'px';
+            confetti.style.top = startY + 'px';
+            confetti.style.opacity = 1;
+
+            const animation = confetti.animate([
+                { top: startY + 'px', transform: `translateX(0px) rotate(0deg)` },
+                { top: (window.innerHeight + 50) + 'px', transform: `translateX(${Math.random() * 600 - 300}px) rotate(${Math.random() * 1080}deg)` }
+            ], {
+                duration: 2500 + Math.random() * 1500,
+                easing: 'linear',
+                fill: 'forwards'
+            });
+
+            document.body.appendChild(confetti);
+            animation.onfinish = () => confetti.remove();
+        }, Math.random() * 800);
+    }
+}
+
+// Close winner modal
+function closeWinnerModal() {
+    winnerModalOverlay.style.display = "none";
+}
+
+// Remove winner and close modal
+function removeWinnerAndClose() {
+    if (lastWinner) {
+        removeName(lastWinner);
+        lastWinner = null;
+    }
+    closeWinnerModal();
+}
+
+// Remove a specific name
+function removeName(nameToRemove) {
+    const initialLength = names.length;
+    names = names.filter(name => name !== nameToRemove);
+    if (names.length !== initialLength) {
+        drawWheel();
+        updateNameList();
+    }
+}
+
+// Add new name
+function addName() {
+    const newName = document.getElementById("newName").value.trim();
+    if (newName) {
+        if (!names.includes(newName)) {
+            names.push(newName);
+            drawWheel();
+            updateNameList();
+            document.getElementById("newName").value = "";
+        } else {
+            showMessageBox(`"${newName}" is already in the list.`, "Duplicate Entry");
+        }
+    } else {
+        showMessageBox("Please enter a name to add.", "Empty Entry");
+    }
+}
+
+// Shuffle names (for the shuffle button)
+function shuffleNames() {
+    for (let i = names.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [names[i], names[j]] = [names[j], names[i]];
+    }
+    drawWheel();
+    updateNameList();
+}
+
+// Sort names (for the sort button)
+function sortNames() {
+    names.sort();
+    drawWheel();
+    updateNameList();
+}
+
+// Clear all names
+function clearAllNames() {
+    showConfirmationBox("Are you sure you want to clear all entries? This cannot be undone.", () => {
+        names = [];
+        drawWheel();
+        updateNameList();
+    });
+}
+
+// Reset wheel and names (could be a "New" function)
+function resetWheel() {
+    currentRotation = 0;
+    wheelEl.style.transition = "none";
+    wheelEl.style.transform = "rotate(0deg)";
+    closeWinnerModal();
+    names = [...originalNames];
+    drawWheel();
+    updateNameList();
+    setTimeout(() => {
+        wheelEl.style.transition = "transform 8s cubic-bezier(0.1, 0.7, 0.1, 1)";
+    }, 100);
+}
+
+// Force Winner Modal Functions
+function openForceWinnerModal() {
+    forceWinnerModalOverlay.style.display = "flex";
+    forceWinnerInput.focus();
+}
+
+function closeForceWinnerModal() {
+    forceWinnerModalOverlay.style.display = "none";
+    forceWinnerInput.value = '';
+}
+
+function setForcedWinner() {
+    const inputName = forceWinnerInput.value.trim();
+    if (inputName) {
+        if (names.includes(inputName)) {
+            forcedWinner = inputName;
+            showMessageBox(`✅ Winner has been set to: "${forcedWinner}". Now, click the center circle to spin the wheel.`, "Success");
+            closeForceWinnerModal();
+        } else {
+            showMessageBox(`⚠️ Error: "${inputName}" is not currently on the wheel. Please check the spelling or add it to the entries list.`, "Entry Not Found");
+        }
+    } else {
+        showMessageBox("Please enter a name to force as winner.", "Empty Input");
+    }
+}
+
+// Custom Message Box Functions
+function showMessageBox(message, title = "Message", callback = null, buttonText = "OK") {
+    messageBoxTitle.textContent = title;
+    messageBoxContent.textContent = message;
+    messageBoxActions.innerHTML = '';
+
+    const okButton = document.createElement('button');
+    okButton.textContent = buttonText;
+    okButton.className = 'confirm-button';
+    okButton.onclick = () => {
+        closeMessageBox();
+        if (callback) callback();
+    };
+    messageBoxActions.appendChild(okButton);
+    messageBoxOverlay.style.display = "flex";
+}
+
+function showConfirmationBox(message, confirmCallback, cancelCallback = null) {
+    messageBoxTitle.textContent = "Confirm Action";
+    messageBoxContent.textContent = message;
+    messageBoxActions.innerHTML = '';
+
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = "Confirm";
+    confirmButton.className = 'confirm-button';
+    confirmButton.onclick = () => {
+        closeMessageBox();
+        if (confirmCallback) confirmCallback();
+    };
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = "Cancel";
+    cancelButton.className = 'cancel-button';
+    cancelButton.onclick = () => {
+        closeMessageBox();
+        if (cancelCallback) cancelCallback();
+    };
+
+    messageBoxActions.appendChild(confirmButton);
+    messageBoxActions.appendChild(cancelButton);
+    messageBoxOverlay.style.display = "flex";
+}
+
+function closeMessageBox() {
+    messageBoxOverlay.style.display = "none";
+}
+
+// Event listeners
+document.addEventListener("DOMContentLoaded", initialize);
+</script>
+</body>
+</html>
