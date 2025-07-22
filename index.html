@@ -451,10 +451,11 @@ body {
 }
 
 /* --- Wheel specific styles --- */
+/* Styles for desktop and larger screens (default) */
 #wheel-container {
     position: relative;
-    width: 90vw;
-    max-width: 500px;
+    width: 500px; /* Set a fixed width for desktop view, or keep 90vw if you want it responsive but capped */
+    max-width: 500px; /* Your desired max width for desktop */
     height: auto;
     aspect-ratio: 1 / 1;
     margin: 0 auto 20px auto;
@@ -464,36 +465,37 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
 }
 
-/* Tablet and smaller */
+/* Tablet and smaller (e.g., iPads in portrait, larger phones) */
 @media (max-width: 1024px) {
     #wheel-container {
-        width: 90vw; /* Make the wheel take up more of the viewport width */
-        max-width: 500px; /* Keep a reasonable maximum size */
-        margin-bottom: 30px; /* Add more space below the wheel */
+        width: 90vw; /* Takes 90% of viewport width */
+        max-width: 500px; /* Limits the size even if viewport is very wide (e.g., tablet landscape) */
+        margin-bottom: 30px;
     }
 }
 
-/* Smaller mobile devices */
+/* Smaller mobile devices (e.g., most smartphones in portrait) */
 @media (max-width: 768px) {
     #wheel-container {
-        width: 95vw; /* Make the wheel even larger on smaller screens */
-        max-width: 450px; /* Slightly reduce max size for very small screens */
+        width: 95vw; /* Makes it even larger, taking 95% of viewport width */
+        max-width: 480px; /* A slightly larger max-width for this breakpoint */
     }
     #wheel svg text {
-        font-size: 14px; /* Slightly increase text size for better readability */
+        font-size: 16px; /* Increased text size for readability on smaller screens */
     }
 }
 
-/* Extra small mobile devices */
+/* Extra small mobile devices (e.g., older/smaller smartphones) */
 @media (max-width: 480px) {
     #wheel-container {
-        width: 100vw; /* Make the wheel take up the full viewport width */
-        max-width: none; /* Remove max-width restriction */
-        margin-left: -20px; /* Compensate for padding to maximize space */
-        margin-right: -20px; /* Compensate for padding to maximize space */
+        width: 100vw; /* Takes full viewport width */
+        max-width: none; /* No max-width restriction for very small screens */
+        margin-left: 0; /* Adjust margins to fill width */
+        margin-right: 0;
+        border-radius: 0; /* Optional: Make it a full circle without rounded corners if it hits edges */
     }
     #wheel svg text {
-        font-size: 16px; /* Further increase text size for very small screens */
+        font-size: 18px; /* Further increased text size */
     }
 }
 
