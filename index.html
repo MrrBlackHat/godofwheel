@@ -474,7 +474,7 @@ body {
     max-width: 450px;
     height: auto;
     aspect-ratio: 1 / 1;
-    margin: 0 auto 20px auto; /* This correctly centers it on desktop */
+    margin: 0 auto 20px auto;
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.6),
                 0px 0px 20px rgba(0, 0, 0, 0.3) inset;
     border-radius: 50%;
@@ -502,33 +502,67 @@ body {
         min-height: auto;
     }
 
+    /* Make wheel larger on tablets */
     #wheel-container {
-        width: 70vw;
-        max-width: 400px;
-        margin: 0 auto 20px auto; /* Ensure this is consistently applied */
+        width: 70vw; /* Using 70% of viewport width for tablets */
+        max-width: 400px; /* Max size to prevent it from getting too big on large tablets */
+        margin-bottom: 20px;
     }
 
     #wheel svg text {
-        font-size: 16px;
+        font-size: 16px; /* Keep 16px for tablets */
     }
 
-    .sidebar { /* ... other sidebar styles ... */ }
-    .header { /* ... other header styles ... */ }
-    .header-nav { /* ... */ }
-    .kebab-menu-icon { /* ... */ }
+    .sidebar {
+        order: 2;
+        width: 100%;
+        border-right: none;
+        box-shadow: none;
+        padding: 15px;
+        background: var(--main-content-bg);
+    }
+
+    .header {
+        justify-content: space-between;
+        padding: 8px 15px;
+        position: relative;
+    }
+
+    /* Hide the desktop navigation on mobile */
+    .header-nav {
+        display: none;
+    }
+
+    /* Show the kebab menu icon on mobile */
+    .kebab-menu-icon {
+        display: block;
+    }
 }
 
 /* Smaller mobile devices (up to 768px wide) */
 @media (max-width: 768px) {
+    .main-content-wrapper {
+        padding: 15px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     #wheel-container {
         width: 90vw;
         max-width: 380px;
-        margin: 0 auto 15px auto; /* Ensure this is consistently applied for this breakpoint */
+        margin: 0 auto 15px auto;
     }
+
+    #wheel {
+        margin: 0 auto;
+    }
+
     #wheel svg text {
         font-size: 16px;
     }
-    /* Pointer size adjustment for these screens */
+    
+    /* Keep your existing styles below */
     .pointer { /* ... */ }
     .center-circle { /* ... */ }
     .sidebar-header h2 { /* ... */ }
@@ -540,20 +574,27 @@ body {
 /* Extra small mobile devices (up to 480px wide) - Stack input and button */
 @media (max-width: 480px) {
     #wheel-container {
-        width: 95vw;
-        max-width: none;
-        margin: 0 auto 15px auto; /* Ensure this is consistently applied for this breakpoint */
-        /* You had margin-left: -15px; and margin-right: -15px; in your original code,
-           which could be causing the issue. This needs to be overridden or removed. */
+        width: 95vw; /* Even larger, 95% of viewport width for small phones */
+        max-width: none; /* Let it expand freely */
+        margin-left: auto; /* Re-center */
+        margin-right: auto; /* Re-center */
     }
     #wheel svg text {
-        font-size: 16px;
+        font-size: 16px; /* Consistent 16px */
     }
 
-    .input-advanced-container { /* ... */ }
-    .sidebar-input-field { /* ... */ }
-    .sidebar-input-group .input-advanced { /* ... */ }
+    .input-advanced-container {
+        flex-direction: column; /* Stack input and button vertically */
+    }
+    .sidebar-input-field {
+        width: 100%; /* Take full width when stacked */
+    }
+    .sidebar-input-group .input-advanced {
+        width: 100%; /* Take full width when stacked */
+        margin-top: 5px; /* Add a little space when stacked */
+    }
 }
+
 
 /* Animation for mobile dropdown */
 @keyframes slideDown {
