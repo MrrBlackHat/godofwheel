@@ -133,7 +133,7 @@ body {
     display: block;
 }
 
-/* NEW: Kebab menu icon for mobile (hidden on desktop) */
+/* Kebab menu icon for mobile (hidden on desktop) */
 .kebab-menu-icon {
     display: none;
     font-size: 28px;
@@ -143,11 +143,11 @@ body {
     line-height: 1;
 }
 
-/* NEW: Mobile navigation dropdown (hidden by default) */
+/* Mobile navigation dropdown (hidden by default) */
 .mobile-nav-dropdown {
-    display: none; /* Hidden by default */
+    display: none;
     position: absolute;
-    top: 50px; /* Below the header */
+    top: 50px;
     right: 0;
     background-color: var(--sidebar-bg);
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -159,7 +159,7 @@ body {
 }
 
 .mobile-nav-dropdown.active {
-    display: block; /* Show when active */
+    display: block;
 }
 
 .mobile-nav-dropdown span {
@@ -183,17 +183,17 @@ body {
 
 /* Specific dropdown styling within the mobile menu */
 .mobile-nav-dropdown .dropdown-content {
-    position: static; /* Remove absolute positioning */
-    display: block !important; /* Always show content if parent dropdown is active */
-    background-color: #444; /* Slightly different background for sub-items */
+    position: static;
+    display: block !important;
+    background-color: #444;
     box-shadow: none;
     border-radius: 0;
-    padding-left: 10px; /* Indent sub-items */
+    padding-left: 10px;
     border-top: 1px solid #555;
 }
 
 .mobile-nav-dropdown .dropdown-content span {
-    padding: 8px 30px; /* Further indent */
+    padding: 8px 30px;
     font-size: 13px;
 }
 
@@ -201,9 +201,9 @@ body {
 .container {
     display: flex;
     flex: 1;
-    min-height: calc(100vh - 50px); /* Adjust height for sticky header */
+    min-height: calc(100vh - 50px);
     overflow: hidden;
-    flex-direction: row; /* Default to row for desktop */
+    flex-direction: row;
 }
 
 .main-content-wrapper {
@@ -332,9 +332,18 @@ body {
     height: 18px;
 }
 
+/* Fix for Advanced button and Input field responsiveness */
+.input-advanced-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Allow wrapping of items if space is tight */
+}
+
 .sidebar-input-field {
     flex-grow: 1;
-    min-width: 0; /* Allow flex item to shrink below content size */
+    min-width: 100px; /* Ensures input field doesn't become too small */
     background-color: var(--input-bg);
     border: 1px solid var(--input-border);
     color: var(--text-color-light);
@@ -353,13 +362,6 @@ body {
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);
 }
 
-.input-advanced-container {
-    display: flex;
-    gap: 10px;
-    width: 100%; /* Ensure it takes full width of its parent */
-    box-sizing: border-box; /* Include padding/border in width */
-}
-
 .sidebar-input-group .input-advanced {
     background: var(--button-bg-dark);
     border: 1px solid var(--button-bg-dark-hover);
@@ -368,7 +370,8 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevents the button from shrinking */
+    min-width: fit-content; /* Ensures button content is always visible */
 }
 
 .sidebar-input-group .input-advanced:hover {
@@ -450,7 +453,7 @@ body {
 /* --- Wheel specific styles --- */
 #wheel-container {
     position: relative;
-    width: 90vw; /* Responsive width */
+    width: 90vw;
     max-width: 500px;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -487,18 +490,16 @@ body {
     pointer-events: none;
 }
 
-/* CORRECTED POINTER STYLES */
+/* CORRECTED POINTER STYLES - Consistent for both Desktop and Mobile */
 .pointer {
     width: 0;
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    /* On desktop, pointer points left, so border-right */
-    border-right: 30px solid #a3a3a3;
+    border-right: 30px solid #a3a3a3; /* Always points left */
     position: absolute;
     top: 50%;
-    /* DESKTOP POSITIONING (Right side of the wheel, pointing left) */
-    right: 0; /* Aligns pointer's right edge to wheel's right edge */
+    right: 0; /* Always on the right side of the wheel container */
     transform: translateY(-50%) translateX(100%); /* Shifts pointer right by its own width to show its tip */
     z-index: 10;
     filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.6));
@@ -524,7 +525,7 @@ body {
 }
 
 .center-circle::after {
-    display: none; /* No inner dot, text instead */
+    display: none;
 }
 
 /* Winner Pop-up (Modal) Styles */
@@ -765,37 +766,36 @@ body {
 /* --- Responsive design adjustments --- */
 @media (max-width: 1024px) { /* Tablet and smaller */
     .container {
-        flex-direction: column; /* Stack vertically on mobile */
-        height: auto; /* Allow content to dictate height */
+        flex-direction: column;
+        height: auto;
     }
 
     .main-content-wrapper {
-        order: 1; /* Wheel section comes first on mobile */
-        padding: 15px; /* Adjust padding for mobile */
-        padding-bottom: 0; /* Remove bottom padding if sidebar follows */
-        min-height: auto; /* Allow height to shrink */
+        order: 1;
+        padding: 15px;
+        padding-bottom: 0;
+        min-height: auto;
     }
 
     #wheel-container {
-        width: 320px; /* Set a specific size for mobile wheel */
+        width: 320px;
         height: 320px;
-        margin-bottom: 20px; /* Space below the wheel */
+        margin-bottom: 20px;
     }
 
     .sidebar {
-        order: 2; /* Sidebar comes second on mobile */
+        order: 2;
         width: 100%;
         border-right: none;
-        box-shadow: none; /* Remove sidebar shadow on mobile */
-        padding: 15px; /* Adjust padding for mobile */
-        background: var(--main-content-bg); /* Match main content background for seamless look */
+        box-shadow: none;
+        padding: 15px;
+        background: var(--main-content-bg);
     }
 
-    /* Adjust header for mobile to be more like wheelofnames.com */
     .header {
-        justify-content: space-between; /* Allow space for kebab icon */
+        justify-content: space-between;
         padding: 8px 15px;
-        position: relative; /* Needed for absolute positioning of mobile-nav-dropdown */
+        position: relative;
     }
 
     /* Hide the desktop navigation on mobile */
@@ -807,17 +807,6 @@ body {
     .kebab-menu-icon {
         display: block;
     }
-
-    /* NEW: Mobile pointer specific styles */
-    .pointer {
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-right: none; /* Remove desktop's right border */
-        border-left: 20px solid #a3a3a3; /* Add left border to point right */
-        left: 0; /* Align to the left edge of the parent */
-        right: auto; /* Reset right property */
-        transform: translateY(-50%) translateX(-100%); /* Shift left by its own width to align its tip */
-    }
 }
 
 @media (max-width: 768px) { /* Smaller mobile devices */
@@ -827,10 +816,16 @@ body {
         margin-bottom: 15px;
     }
     #wheel svg text {
-        font-size: 13px; /* Slightly smaller text on wheel */
+        font-size: 13px;
+    }
+    /* Pointer size adjustment for very small screens */
+    .pointer {
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 20px solid #a3a3a3; /* Smaller pointer for very small screens */
     }
     .center-circle {
-        width: 70px; /* Smaller center circle */
+        width: 70px;
         height: 70px;
         font-size: 13px;
     }
@@ -850,6 +845,20 @@ body {
     }
 }
 
+@media (max-width: 480px) { /* Extra small mobile devices - Stack input and button */
+    .input-advanced-container {
+        flex-direction: column; /* Stack input and button vertically */
+    }
+    .sidebar-input-field {
+        width: 100%; /* Take full width when stacked */
+    }
+    .sidebar-input-group .input-advanced {
+        width: 100%; /* Take full width when stacked */
+        margin-top: 5px; /* Add a little space when stacked */
+    }
+}
+
+
 /* Animation for mobile dropdown */
 @keyframes slideDown {
     from { opacity: 0; transform: translateY(-10px); }
@@ -859,7 +868,7 @@ body {
 /* Ensure desktop dropdowns still work if somehow media query overlaps */
 @media (min-width: 1025px) {
     .mobile-nav-dropdown {
-        display: none !important; /* Ensure it's never visible on desktop */
+        display: none !important;
     }
 }
 </style>
@@ -892,7 +901,9 @@ body {
         </span>
     </div>
 
-    <div class="kebab-menu-icon" onclick="toggleMobileNav()">&#x22EE;</div> <div id="mobileNavDropdown" class="mobile-nav-dropdown">
+    <div class="kebab-menu-icon" onclick="toggleMobileNav()">&#x22EE;</div>
+
+    <div id="mobileNavDropdown" class="mobile-nav-dropdown">
         <span onclick="alert('Customize clicked'); toggleMobileNav();">Customize</span>
         <span onclick="alert('New clicked'); toggleMobileNav();">New</span>
         <span onclick="alert('Open clicked'); toggleMobileNav();">Open</span>
@@ -1350,13 +1361,13 @@ function showConfirmationBox(message, onConfirm, title = "Confirm Action") {
     messageBoxOverlay.style.display = "flex";
 }
 
-// NEW: Function to toggle mobile navigation
+// Function to toggle mobile navigation
 function toggleMobileNav() {
     mobileNavDropdown.classList.toggle('active');
     // Close dropdowns if the main menu is closed
     if (!mobileNavDropdown.classList.contains('active')) {
         const dropdowns = mobileNavDropdown.querySelectorAll('.dropdown-content');
-        dropdowns.forEach(dd => dd.style.display = 'none'); // Ensure sub-dropdowns are hidden
+        dropdowns.forEach(dd => dd.style.display = 'none');
     }
 }
 
@@ -1364,10 +1375,11 @@ function toggleMobileNav() {
 document.addEventListener('click', (event) => {
     const header = document.querySelector('.header');
     const kebabIcon = document.querySelector('.kebab-menu-icon');
+    const clickedInsideDropdown = mobileNavDropdown.contains(event.target);
 
-    // Check if the click is outside the header and the mobile nav is open
-    // This logic prevents closing when clicking within the header or on the icon itself
-    if (mobileNavDropdown.classList.contains('active') && !header.contains(event.target) && !kebabIcon.contains(event.target)) {
+    // If mobile nav is active and the click is NOT inside the header (which includes the icon)
+    // AND NOT inside the mobile dropdown itself, then close it.
+    if (mobileNavDropdown.classList.contains('active') && !header.contains(event.target) && !clickedInsideDropdown) {
         mobileNavDropdown.classList.remove('active');
     }
 });
