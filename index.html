@@ -28,7 +28,7 @@
 }
 
 body {
-    font-family: 'Noto Sans Khmer', 'Khmer', 'Arial', sans-serif; /* Your original font family */
+    font-family: 'Noto Sans Khmer', 'Khmer', 'Arial', sans-serif;
     background: var(--body-bg);
     margin: 0;
     padding: 0;
@@ -38,7 +38,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- Header Styles (Original) --- */
+/* --- Header Styles --- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -75,6 +75,11 @@ body {
     margin: 0;
     font-size: 18px;
     font-weight: normal;
+}
+
+/* Desktop Navigation */
+.header-nav {
+    display: flex; /* Default for desktop */
 }
 
 .header-nav span {
@@ -117,7 +122,7 @@ body {
     text-decoration: none;
     display: block;
     text-align: left;
-    cursor: pointer; /* Ensure dropdown items are clickable */
+    cursor: pointer;
 }
 
 .header-nav .dropdown-content span:hover {
@@ -128,6 +133,69 @@ body {
     display: block;
 }
 
+/* NEW: Kebab menu icon for mobile (hidden on desktop) */
+.kebab-menu-icon {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #fff;
+    padding: 0 10px;
+    line-height: 1;
+}
+
+/* NEW: Mobile navigation dropdown (hidden by default) */
+.mobile-nav-dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 50px; /* Below the header */
+    right: 0;
+    background-color: var(--sidebar-bg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border-radius: 0 0 5px 5px;
+    overflow: hidden;
+    z-index: 999;
+    width: 200px;
+    animation: slideDown 0.2s ease-out;
+}
+
+.mobile-nav-dropdown.active {
+    display: block; /* Show when active */
+}
+
+.mobile-nav-dropdown span {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-color-light);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.mobile-nav-dropdown span:last-child {
+    border-bottom: none;
+}
+
+.mobile-nav-dropdown span:hover {
+    background-color: #444;
+}
+
+/* Specific dropdown styling within the mobile menu */
+.mobile-nav-dropdown .dropdown-content {
+    position: static; /* Remove absolute positioning */
+    display: block !important; /* Always show content if parent dropdown is active */
+    background-color: #444; /* Slightly different background for sub-items */
+    box-shadow: none;
+    border-radius: 0;
+    padding-left: 10px; /* Indent sub-items */
+    border-top: 1px solid #555;
+}
+
+.mobile-nav-dropdown .dropdown-content span {
+    padding: 8px 30px; /* Further indent */
+    font-size: 13px;
+}
 
 /* --- Main Container and Layout --- */
 .container {
@@ -185,7 +253,7 @@ body {
     font-weight: normal;
 }
 
-.sidebar-header .entries-count { /* Changed from results-count for clarity based on your image */
+.sidebar-header .entries-count {
     font-size: 14px;
     color: #bbb;
     display: flex;
@@ -193,7 +261,7 @@ body {
     gap: 5px;
 }
 
-.sidebar-header .entries-count span { /* Changed from results-count for clarity based on your image */
+.sidebar-header .entries-count span {
     background-color: #005cfa;
     color: #fff;
     padding: 4px 8px;
@@ -266,6 +334,7 @@ body {
 
 .sidebar-input-field {
     flex-grow: 1;
+    min-width: 0; /* Allow flex item to shrink below content size */
     background-color: var(--input-bg);
     border: 1px solid var(--input-border);
     color: var(--text-color-light);
@@ -287,6 +356,8 @@ body {
 .input-advanced-container {
     display: flex;
     gap: 10px;
+    width: 100%; /* Ensure it takes full width of its parent */
+    box-sizing: border-box; /* Include padding/border in width */
 }
 
 .sidebar-input-group .input-advanced {
@@ -422,11 +493,13 @@ body {
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-right: 30px solid #a3a3a3; /* Pointer head points left */
+    /* On desktop, pointer points left, so border-right */
+    border-right: 30px solid #a3a3a3;
     position: absolute;
     top: 50%;
-    left: 480px; /* Position on the left edge of the wheel */
-    transform: translateY(-50%);
+    /* DESKTOP POSITIONING (Right side of the wheel, pointing left) */
+    right: 0; /* Aligns pointer's right edge to wheel's right edge */
+    transform: translateY(-50%) translateX(100%); /* Shifts pointer right by its own width to show its tip */
     z-index: 10;
     filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.6));
 }
@@ -720,12 +793,9 @@ body {
 
     /* Adjust header for mobile to be more like wheelofnames.com */
     .header {
-        justify-content: center; /* Center the title */
+        justify-content: space-between; /* Allow space for kebab icon */
         padding: 8px 15px;
-    }
-
-    .header-left {
-        margin-bottom: 0; /* No margin below header on mobile */
+        position: relative; /* Needed for absolute positioning of mobile-nav-dropdown */
     }
 
     /* Hide the desktop navigation on mobile */
@@ -733,8 +803,20 @@ body {
         display: none;
     }
 
-    .sidebar-header .entries-count { /* Adjust count style for consistency */
-        margin-left: auto; /* Push count to the right */
+    /* Show the kebab menu icon on mobile */
+    .kebab-menu-icon {
+        display: block;
+    }
+
+    /* NEW: Mobile pointer specific styles */
+    .pointer {
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: none; /* Remove desktop's right border */
+        border-left: 20px solid #a3a3a3; /* Add left border to point right */
+        left: 0; /* Align to the left edge of the parent */
+        right: auto; /* Reset right property */
+        transform: translateY(-50%) translateX(-100%); /* Shift left by its own width to align its tip */
     }
 }
 
@@ -746,12 +828,6 @@ body {
     }
     #wheel svg text {
         font-size: 13px; /* Slightly smaller text on wheel */
-    }
-    .pointer {
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-right: 20px solid #a3a3a3; /* Adjust size for smaller screens */
-        left: -10px; /* Adjust position for smaller screens */
     }
     .center-circle {
         width: 70px; /* Smaller center circle */
@@ -773,6 +849,19 @@ body {
         padding: 6px 5px;
     }
 }
+
+/* Animation for mobile dropdown */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure desktop dropdowns still work if somehow media query overlaps */
+@media (min-width: 1025px) {
+    .mobile-nav-dropdown {
+        display: none !important; /* Ensure it's never visible on desktop */
+    }
+}
 </style>
 </head>
 <body>
@@ -788,7 +877,7 @@ body {
         <span>Save</span>
         <span>Share</span>
         <span>Gallery</span>
-       <span class="dropdown">More
+        <span class="dropdown">More
             <div class="dropdown-content">
                 <span>Option 1</span>
                 <span>Option 2</span>
@@ -799,6 +888,28 @@ body {
             <div class="dropdown-content">
                 <span>ភាសាខ្មែរ (Khmer)</span>
                 <span>Español</span>
+            </div>
+        </span>
+    </div>
+
+    <div class="kebab-menu-icon" onclick="toggleMobileNav()">&#x22EE;</div> <div id="mobileNavDropdown" class="mobile-nav-dropdown">
+        <span onclick="alert('Customize clicked'); toggleMobileNav();">Customize</span>
+        <span onclick="alert('New clicked'); toggleMobileNav();">New</span>
+        <span onclick="alert('Open clicked'); toggleMobileNav();">Open</span>
+        <span onclick="alert('Save clicked'); toggleMobileNav();">Save</span>
+        <span onclick="alert('Share clicked'); toggleMobileNav();">Share</span>
+        <span onclick="alert('Gallery clicked'); toggleMobileNav();">Gallery</span>
+        <span class="dropdown">More
+            <div class="dropdown-content">
+                <span onclick="alert('Option 1 clicked'); toggleMobileNav();">Option 1</span>
+                <span onclick="alert('Option 2 clicked'); toggleMobileNav();">Option 2</span>
+                <span onclick="openForceWinnerModal(); toggleMobileNav();">Force Winner</span>
+            </div>
+        </span>
+        <span class="dropdown">English
+            <div class="dropdown-content">
+                <span onclick="alert('Khmer clicked'); toggleMobileNav();">ភាសាខ្មែរ (Khmer)</span>
+                <span onclick="alert('Spanish clicked'); toggleMobileNav();">Español</span>
             </div>
         </span>
     </div>
@@ -866,7 +977,7 @@ body {
                         <path d="M7 21H9V4H7V21ZM15 13H17V4H15V13ZM11 17H13V4H11V17ZM3 21H5V4H3V21ZM19 21H21V4H19V21Z" />
                     </svg> Sort
                 </button>
-                <button>
+                <button onclick="clearAllNames()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 10.59L14.59 8L16 9.41L13.41 12L16 14.59L14.59 16L12 13.41L9.41 16L8 14.59L10.59 12L8 9.41L9.41 8L12 10.59Z" />
                     </svg> Clear All
@@ -919,6 +1030,7 @@ const messageBoxOverlay = document.getElementById("messageBoxOverlay");
 const messageBoxTitle = document.getElementById("messageBoxTitle");
 const messageBoxContent = document.getElementById("messageBoxContent");
 const messageBoxActions = document.getElementById("messageBoxActions");
+const mobileNavDropdown = document.getElementById("mobileNavDropdown");
 
 
 function resizeWheel() {
@@ -1171,95 +1283,98 @@ function clearAllNames() {
     });
 }
 
-// Reset wheel and names (could be a "New" function)
-function resetWheel() {
-    currentRotation = 0;
-    wheelEl.style.transition = "none";
-    wheelEl.style.transform = "rotate(0deg)";
-    closeWinnerModal();
-    names = [...originalNames];
-    drawWheel();
-    updateNameList();
-    setTimeout(() => {
-        wheelEl.style.transition = "transform 8s cubic-bezier(0.1, 0.7, 0.1, 1)";
-    }, 100);
-}
-
-// Force Winner Modal Functions
+// Open force winner modal
 function openForceWinnerModal() {
     forceWinnerModalOverlay.style.display = "flex";
     forceWinnerInput.focus();
 }
 
+// Close force winner modal
 function closeForceWinnerModal() {
     forceWinnerModalOverlay.style.display = "none";
-    forceWinnerInput.value = '';
+    forceWinnerInput.value = ''; // Clear input on close
 }
 
+// Set forced winner
 function setForcedWinner() {
-    const inputName = forceWinnerInput.value.trim();
-    if (inputName) {
-        if (names.includes(inputName)) {
-            forcedWinner = inputName;
-            showMessageBox(`✅ Winner has been set to: "${forcedWinner}". Now, click the center circle to spin the wheel.`, "Success");
+    const name = forceWinnerInput.value.trim();
+    if (name) {
+        if (names.includes(name)) {
+            forcedWinner = name;
+            showMessageBox(`"${name}" will be the next winner. Spin the wheel!`, "Winner Set");
             closeForceWinnerModal();
         } else {
-            showMessageBox(`⚠️ Error: "${inputName}" is not currently on the wheel. Please check the spelling or add it to the entries list.`, "Entry Not Found");
+            showMessageBox(`"${name}" is not in the current list of entries.`, "Name Not Found");
         }
     } else {
-        showMessageBox("Please enter a name to force as winner.", "Empty Input");
+        showMessageBox("Please enter a name to force as winner.", "Empty Name");
     }
 }
 
-// Custom Message Box Functions
-function showMessageBox(message, title = "Message", callback = null, buttonText = "OK") {
+// Generic message box function
+function showMessageBox(message, title = "Message", type = "alert") {
     messageBoxTitle.textContent = title;
     messageBoxContent.textContent = message;
-    messageBoxActions.innerHTML = '';
+    messageBoxActions.innerHTML = ''; // Clear previous buttons
 
-    const okButton = document.createElement('button');
-    okButton.textContent = buttonText;
-    okButton.className = 'confirm-button';
-    okButton.onclick = () => {
-        closeMessageBox();
-        if (callback) callback();
-    };
-    messageBoxActions.appendChild(okButton);
+    const closeButton = document.createElement('button');
+    closeButton.textContent = "OK";
+    closeButton.className = "close-button";
+    closeButton.onclick = () => messageBoxOverlay.style.display = "none";
+    messageBoxActions.appendChild(closeButton);
+
     messageBoxOverlay.style.display = "flex";
 }
 
-function showConfirmationBox(message, confirmCallback, cancelCallback = null) {
-    messageBoxTitle.textContent = "Confirm Action";
+// Generic confirmation box function
+function showConfirmationBox(message, onConfirm, title = "Confirm Action") {
+    messageBoxTitle.textContent = title;
     messageBoxContent.textContent = message;
-    messageBoxActions.innerHTML = '';
+    messageBoxActions.innerHTML = ''; // Clear previous buttons
 
     const confirmButton = document.createElement('button');
     confirmButton.textContent = "Confirm";
-    confirmButton.className = 'confirm-button';
+    confirmButton.className = "confirm-button";
     confirmButton.onclick = () => {
-        closeMessageBox();
-        if (confirmCallback) confirmCallback();
+        onConfirm();
+        messageBoxOverlay.style.display = "none";
     };
+    messageBoxActions.appendChild(confirmButton);
 
     const cancelButton = document.createElement('button');
     cancelButton.textContent = "Cancel";
-    cancelButton.className = 'cancel-button';
-    cancelButton.onclick = () => {
-        closeMessageBox();
-        if (cancelCallback) cancelCallback();
-    };
-
-    messageBoxActions.appendChild(confirmButton);
+    cancelButton.className = "cancel-button";
+    cancelButton.onclick = () => messageBoxOverlay.style.display = "none";
     messageBoxActions.appendChild(cancelButton);
+
     messageBoxOverlay.style.display = "flex";
 }
 
-function closeMessageBox() {
-    messageBoxOverlay.style.display = "none";
+// NEW: Function to toggle mobile navigation
+function toggleMobileNav() {
+    mobileNavDropdown.classList.toggle('active');
+    // Close dropdowns if the main menu is closed
+    if (!mobileNavDropdown.classList.contains('active')) {
+        const dropdowns = mobileNavDropdown.querySelectorAll('.dropdown-content');
+        dropdowns.forEach(dd => dd.style.display = 'none'); // Ensure sub-dropdowns are hidden
+    }
 }
 
-// Event listeners
-document.addEventListener("DOMContentLoaded", initialize);
+// Optional: Close mobile nav when clicking outside
+document.addEventListener('click', (event) => {
+    const header = document.querySelector('.header');
+    const kebabIcon = document.querySelector('.kebab-menu-icon');
+
+    // Check if the click is outside the header and the mobile nav is open
+    // This logic prevents closing when clicking within the header or on the icon itself
+    if (mobileNavDropdown.classList.contains('active') && !header.contains(event.target) && !kebabIcon.contains(event.target)) {
+        mobileNavDropdown.classList.remove('active');
+    }
+});
+
+
+// Call initialize when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initialize);
 </script>
 </body>
 </html>
